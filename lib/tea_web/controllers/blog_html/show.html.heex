@@ -1,0 +1,26 @@
+<Layouts.app flash={@flash}>
+  <main class="site-main site-main--article">
+    <nav class="article-back" aria-label="Article navigation">
+      <a href={~p"/articles"} class="text-link">Back to articles</a>
+    </nav>
+
+    <article class="article-shell">
+      <header class="article-header">
+        <p class="kicker">
+          <time datetime={Date.to_iso8601(@article.date)}>
+            {Calendar.strftime(@article.date, "%B %d, %Y")}
+          </time>
+        </p>
+        <h1>{@article.title}</h1>
+
+        <div class="tag-list" aria-label="Article tags">
+          <span :for={tag <- @article.tags}>{tag}</span>
+        </div>
+      </header>
+
+      <div class="article-body">
+        {Phoenix.HTML.raw(@article.html)}
+      </div>
+    </article>
+  </main>
+</Layouts.app>

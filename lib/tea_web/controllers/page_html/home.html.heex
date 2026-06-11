@@ -2,47 +2,30 @@
   <main class="site-main">
     <section class="home-hero">
       <div class="home-hero__copy">
-        <p class="kicker">Tea notes from the Pacific Northwest</p>
+        <p class="kicker">Unrelated notes from the Pacific Northwest</p>
 
-        <h1 class="display-title">Quiet ideas brewed slowly.</h1>
+        <h1 class="display-title" aria-label="Berkenpas.">
+          <span class="typing-word typing-word--berkenpas" aria-hidden="true">Berkenpas.</span>
+          <span class="typing-word typing-word--blog" aria-hidden="true">Blog.</span>
+        </h1>
 
         <p class="lede">
-          A minimal journal for tea, lofi coding sessions, neighborhood cafe thoughts, and independent web experiments.
+          Quiet ideas brewed slowly
         </p>
 
         <div class="action-row">
-          <a href={~p"/articles"} class="text-link text-link--strong">Read articles</a>
-          <a href={~p"/articles/first-steep"} class="text-link">Open example post</a>
+          <a href={~p"/writings"} class="text-link text-link--strong">Read writings</a>
+          <a :if={@recent_article} href={@recent_article_path} class="text-link">
+            Recent post
+          </a>
         </div>
       </div>
 
-      <div class="home-hero__visual" aria-hidden="true">
-        <div class="tea-label">
-          <span>Small Batch Notes</span>
-          <strong>First Steep</strong>
-          <span>Phoenix / Markdown / Journal</span>
-        </div>
+      <div class="home-hero__logo">
+        <img src={~p"/images/BerkenpasLogo.svg"} alt="Berkenpas logo" />
       </div>
     </section>
 
-    <section class="feature-grid" aria-label="Site sections">
-      <div class="feature-panel">
-        <p class="kicker">Archive</p>
-        <h2>Markdown articles</h2>
-        <p>Write posts in `priv/articles` and publish them as clean, readable pages.</p>
-      </div>
-
-      <div class="feature-panel">
-        <p class="kicker">Current batch</p>
-        <h2>Indie build log</h2>
-        <p>Notes for the small decisions that make a site feel personal, useful, and alive.</p>
-      </div>
-
-      <div class="feature-panel">
-        <p class="kicker">Serving</p>
-        <h2>Phoenix pages</h2>
-        <p>A simple controller-backed blog with warm typography and no visual noise.</p>
-      </div>
-    </section>
+    <div class="home-after-space" aria-hidden="true"></div>
   </main>
 </Layouts.app>

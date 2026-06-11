@@ -36,22 +36,22 @@ defmodule TeaWeb.Layouts do
   def app(assigns) do
     ~H"""
     <header class="site-header">
-      <a href={~p"/"} class="site-mark" aria-label="Tea home">
-        <span class="site-mark__stamp">T</span>
-        <span>Tea</span>
+      <a href={~p"/"} class="site-mark" aria-label="Berkenpas home">
+        <img src={~p"/images/BerkenpasLogo.svg"} alt="" class="site-mark__logo" />
+        <span>Berkenpas</span>
       </a>
 
       <nav class="site-nav" aria-label="Main navigation">
-        <a href={~p"/articles"}>Articles</a>
-        <a href={~p"/articles/first-steep"}>First Steep</a>
+        <a href={~p"/writings"}>Writings</a>
+        <a href={~p"/reviews"}>Reviews</a>
       </nav>
     </header>
 
     {render_slot(@inner_block)}
 
     <footer class="site-footer">
-      <p>Tea notes, project logs, and slow-brewed web experiments.</p>
-      <a href={~p"/articles"}>Browse the archive</a>
+      <p>Blog. Blog. Glob. Blog. Blog. Berkenpas. Blog. Blog. Glob</p>
+      <a href={~p"/writings"}>Browse the archive</a>
     </footer>
 
     <.flash_group flash={@flash} />

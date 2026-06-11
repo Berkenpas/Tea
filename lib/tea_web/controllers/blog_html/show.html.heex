@@ -1,7 +1,7 @@
 <Layouts.app flash={@flash}>
   <main class="site-main site-main--article">
     <nav class="article-back" aria-label="Article navigation">
-      <a href={~p"/articles"} class="text-link">Back to articles</a>
+      <a href={@section_path} class="text-link">Back to {String.downcase(@section_label)}</a>
     </nav>
 
     <article class="article-shell">

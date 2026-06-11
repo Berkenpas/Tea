@@ -1,14 +1,19 @@
 <Layouts.app flash={@flash}>
   <main class="site-main site-main--narrow">
     <header class="page-heading">
-      <p class="kicker">Articles</p>
-      <h1>Brew Log</h1>
+      <p class="kicker">{@section_label}</p>
+      <h1>{@section_title}</h1>
       <p>
-        Minimal essays and project notes, written in markdown and served by Phoenix.
+        {@section_description}
       </p>
     </header>
 
     <section class="article-list">
+      <div :if={@articles == []} class="empty-entry">
+        <p class="kicker">{@empty_title}</p>
+        <p>{@empty_description}</p>
+      </div>
+
       <article :for={article <- @articles} class="article-row">
         <div class="article-row__meta">
           <time datetime={Date.to_iso8601(article.date)}>
@@ -18,7 +23,7 @@
 
         <div class="article-row__body">
           <h2>
-            <a href={~p"/articles/#{article.slug}"}>{article.title}</a>
+            <a href={"#{@section_path}/#{article.slug}"}>{article.title}</a>
           </h2>
           <p>{article.excerpt}</p>
 

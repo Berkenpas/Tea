@@ -3,6 +3,9 @@ defmodule TeaWeb.PageControllerTest do
 
   test "GET /", %{conn: conn} do
     conn = get(conn, ~p"/")
-    assert html_response(conn, 200) =~ "Quiet ideas brewed slowly"
+
+    body = html_response(conn, 200)
+    assert body =~ "Quiet ideas brewed slowly"
+    assert body =~ "Recent post"
   end
 end

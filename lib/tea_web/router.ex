@@ -18,8 +18,12 @@ defmodule TeaWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
-    get "/articles", BlogController, :index
-    get "/articles/:slug", BlogController, :show
+    get "/articles", BlogController, :articles
+    get "/articles/:slug", BlogController, :article
+    get "/writings", BlogController, :writings
+    get "/writings/:slug", BlogController, :writing
+    get "/reviews", BlogController, :reviews
+    get "/reviews/:slug", BlogController, :review
   end
 
   # Other scopes may use custom stacks.

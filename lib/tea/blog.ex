@@ -12,9 +12,27 @@ defmodule Tea.Blog do
     |> Enum.sort_by(& &1.date, {:desc, Date})
   end
 
+  def list_writings do
+    list_by_category("writing")
+  end
+
+  def list_reviews do
+    list_by_category("review")
+  end
+
   def get_article(slug) when is_binary(slug) do
     list_articles()
     |> Enum.find(&(&1.slug == slug))
+  end
+
+  def get_article(slug, category) when is_binary(slug) and is_binary(category) do
+    list_articles()
+    |> Enum.find(&(&1.slug == slug and &1.category == category))
+  end
+
+  defp list_by_category(category) do
+    list_articles()
+    |> Enum.filter(&(&1.category == category))
   end
 
   defp parse_article_file(path) do
@@ -46,9 +64,18 @@ defmodule Tea.Blog do
       title: Map.get(frontmatter, "title", slug_to_title(slug)),
       excerpt: Map.get(frontmatter, "excerpt", ""),
       date: date,
+      category: category(frontmatter),
       tags: tags,
       html: html
     }
+  end
+
+  defp category(frontmatter) do
+    case Map.get(frontmatter, "category", "writing") |> String.downcase() |> String.trim() do
+      "review" -> "review"
+      "reviews" -> "review"
+      _ -> "writing"
+    end
   end
 
   defp parse_frontmatter("---\n" <> rest) do

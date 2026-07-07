@@ -43,12 +43,12 @@ Done:
 - Article categories for writings and reviews exist.
 - Server-rendered home, index, and detail pages exist.
 - Custom site layout and visual CSS exist.
+- Small authenticated General chat room exists.
+- Chat uses persisted Postgres messages, LiveView streams, and PubSub inserts.
 
 Not done yet:
 
-- Auth page visual polish.
-- Persistent chat data model.
-- Chat LiveView.
+- Presence tracking and typing indicators for chat.
 - RSS feed.
 - About page.
 - Fly.io release/deployment files.
@@ -139,21 +139,21 @@ Recommended implementation order:
 - [x] Run `MIX_ENV=test mix ecto.migrate`.
 - [x] Review generated authenticated route scopes.
 - [x] Ensure LiveViews use `<Layouts.app flash={@flash} current_scope={@current_scope}>` once auth scopes are present.
-- [ ] Style auth pages with project Tailwind/CSS conventions.
+- [x] Style auth pages with project Tailwind/CSS conventions.
 
 ### Small Chat
 
-- [ ] Add `chat_rooms` table.
-- [ ] Add `chat_messages` table.
-- [ ] Add `Tea.Chat` context.
-- [ ] Add `Tea.Chat.Room` schema.
-- [ ] Add `Tea.Chat.Message` schema.
-- [ ] Add a default general room seed.
-- [ ] Add `TeaWeb.ChatLive`.
-- [ ] Route `/chat` through the authenticated browser/live session.
-- [ ] Use LiveView streams for messages.
-- [ ] Use PubSub for realtime inserts.
-- [ ] Keep Presence and typing indicators for a follow-up pass.
+- [x] Add `chat_rooms` table.
+- [x] Add `chat_messages` table.
+- [x] Add `Tea.Chat` context.
+- [x] Add `Tea.Chat.Room` schema.
+- [x] Add `Tea.Chat.Message` schema.
+- [x] Add a default general room seed.
+- [x] Add `TeaWeb.ChatLive`.
+- [x] Route `/chat` through the authenticated browser/live session.
+- [x] Use LiveView streams for messages.
+- [x] Use PubSub for realtime inserts.
+- [x] Keep Presence and typing indicators for a follow-up pass.
 
 ### Deployment
 

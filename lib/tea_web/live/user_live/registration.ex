@@ -8,14 +8,14 @@ defmodule TeaWeb.UserLive.Registration do
   def render(assigns) do
     ~H"""
     <Layouts.app flash={@flash} current_scope={@current_scope}>
-      <main class="site-main site-main--narrow">
-        <div class="mx-auto max-w-sm">
-          <div class="text-center">
+      <main class="site-main site-main--auth">
+        <section class="auth-panel">
+          <div class="auth-panel__heading">
             <.header>
               Register for an account
               <:subtitle>
                 Already registered?
-                <.link navigate={~p"/users/log-in"} class="font-semibold text-brand hover:underline">
+                <.link navigate={~p"/users/log-in"} class="inline-text-link">
                   Log in
                 </.link>
                 to your account now.
@@ -34,11 +34,11 @@ defmodule TeaWeb.UserLive.Registration do
               phx-mounted={JS.focus()}
             />
 
-            <.button phx-disable-with="Creating account..." class="btn btn-primary w-full">
+            <.button phx-disable-with="Creating account..." variant="primary">
               Create an account
             </.button>
           </.form>
-        </div>
+        </section>
       </main>
     </Layouts.app>
     """

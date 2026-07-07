@@ -44,6 +44,7 @@ defmodule TeaWeb.Layouts do
       <nav class="site-nav" aria-label="Main navigation">
         <a href={~p"/writings"}>Writings</a>
         <a href={~p"/reviews"}>Reviews</a>
+        <a :if={@current_scope && @current_scope.user} href={~p"/chat"}>Chat</a>
       </nav>
     </header>
 

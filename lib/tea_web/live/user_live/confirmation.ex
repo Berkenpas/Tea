@@ -7,9 +7,9 @@ defmodule TeaWeb.UserLive.Confirmation do
   def render(assigns) do
     ~H"""
     <Layouts.app flash={@flash} current_scope={@current_scope}>
-      <main class="site-main site-main--narrow">
-        <div class="mx-auto max-w-sm">
-          <div class="text-center">
+      <main class="site-main site-main--auth">
+        <section class="auth-panel">
+          <div class="auth-panel__heading">
             <.header>Welcome {@user.email}</.header>
           </div>
 
@@ -27,11 +27,11 @@ defmodule TeaWeb.UserLive.Confirmation do
               name={@form[:remember_me].name}
               value="true"
               phx-disable-with="Confirming..."
-              class="btn btn-primary w-full"
+              variant="primary"
             >
               Confirm and stay logged in
             </.button>
-            <.button phx-disable-with="Confirming..." class="btn btn-primary btn-soft w-full mt-2">
+            <.button phx-disable-with="Confirming...">
               Confirm and log in only this time
             </.button>
           </.form>
@@ -47,7 +47,7 @@ defmodule TeaWeb.UserLive.Confirmation do
           >
             <input type="hidden" name={@form[:token].name} value={@form[:token].value} />
             <%= if @current_scope do %>
-              <.button phx-disable-with="Logging in..." class="btn btn-primary w-full">
+              <.button phx-disable-with="Logging in..." variant="primary">
                 Log in
               </.button>
             <% else %>
@@ -55,20 +55,20 @@ defmodule TeaWeb.UserLive.Confirmation do
                 name={@form[:remember_me].name}
                 value="true"
                 phx-disable-with="Logging in..."
-                class="btn btn-primary w-full"
+                variant="primary"
               >
                 Keep me logged in on this device
               </.button>
-              <.button phx-disable-with="Logging in..." class="btn btn-primary btn-soft w-full mt-2">
+              <.button phx-disable-with="Logging in...">
                 Log me in only this time
               </.button>
             <% end %>
           </.form>
 
-          <p :if={!@user.confirmed_at} class="alert alert-outline mt-8">
+          <p :if={!@user.confirmed_at} class="auth-note auth-note--quiet">
             Tip: If you prefer passwords, you can enable them in the user settings.
           </p>
-        </div>
+        </section>
       </main>
     </Layouts.app>
     """

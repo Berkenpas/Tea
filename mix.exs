@@ -40,7 +40,9 @@ defmodule Tea.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:bcrypt_elixir, "~> 3.0"},
       {:phoenix, "~> 1.8.7"},
+      {:phoenix_ecto, "~> 4.6"},
       {:phoenix_html, "~> 4.1"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_view, "~> 1.1.0"},
@@ -56,6 +58,9 @@ defmodule Tea.MixProject do
        depth: 1},
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
+      {:ecto_sql, "~> 3.13"},
+      {:postgrex, ">= 0.0.0"},
+      {:swoosh, "~> 1.19"},
       {:earmark, "~> 1.4"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
@@ -72,6 +77,8 @@ defmodule Tea.MixProject do
   defp aliases do
     [
       setup: ["deps.get", "assets.setup", "assets.build"],
+      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      "ecto.reset": ["ecto.drop", "ecto.setup"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
       "assets.build": ["compile", "tailwind tea", "esbuild tea"],
       "assets.deploy": [

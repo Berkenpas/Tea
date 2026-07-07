@@ -39,6 +39,21 @@ if config_env() == :prod do
 
   config :tea, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
 
+  database_url =
+    System.get_env("DATABASE_URL") ||
+      raise """
+      environment variable DATABASE_URL is missing.
+      For Neon, copy the Postgres connection string from the Neon console.
+      """
+
+  maybe_ipv6 = if System.get_env("ECTO_IPV6") in ~w(true 1), do: [:inet6], else: []
+
+  config :tea, Tea.Repo,
+    url: database_url,
+    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
+    socket_options: maybe_ipv6,
+    ssl: [cacerts: :public_key.cacerts_get()]
+
   config :tea, TeaWeb.Endpoint,
     url: [host: host, port: 443, scheme: "https"],
     http: [

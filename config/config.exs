@@ -7,8 +7,24 @@
 # General application configuration
 import Config
 
+config :tea, :scopes,
+  user: [
+    default: true,
+    module: Tea.Accounts.Scope,
+    assign_key: :current_scope,
+    access_path: [:user, :id],
+    schema_key: :user_id,
+    schema_type: :id,
+    schema_table: :users,
+    test_data_fixture: Tea.AccountsFixtures,
+    test_setup_helper: :register_and_log_in_user
+  ]
+
 config :tea,
   generators: [timestamp_type: :utc_datetime]
+
+config :tea,
+  ecto_repos: [Tea.Repo]
 
 # Configure the endpoint
 config :tea, TeaWeb.Endpoint,
@@ -49,6 +65,8 @@ config :logger, :default_formatter,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+config :swoosh, :api_client, false
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

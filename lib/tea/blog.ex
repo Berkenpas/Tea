@@ -3,10 +3,8 @@ defmodule Tea.Blog do
   Loads markdown files from priv/articles and exposes them as blog posts.
   """
 
-  @articles_glob Path.join([:code.priv_dir(:tea), "articles", "*.md"])
-
   def list_articles do
-    @articles_glob
+    articles_glob()
     |> Path.wildcard()
     |> Enum.map(&parse_article_file/1)
     |> Enum.sort_by(& &1.date, {:desc, Date})
@@ -35,18 +33,21 @@ defmodule Tea.Blog do
     |> Enum.filter(&(&1.category == category))
   end
 
+  defp articles_glob do
+    Path.join([articles_dir(), "*.md"])
+  end
+
+  defp articles_dir do
+    Application.get_env(:tea, :articles_dir) || Path.join(:code.priv_dir(:tea), "articles")
+  end
+
   defp parse_article_file(path) do
     body = File.read!(path)
     slug = path |> Path.basename(".md")
 
     {frontmatter, markdown} = parse_frontmatter(body)
 
-    {:ok, html, _warnings} =
-      Earmark.as_html(markdown,
-        smartypants: false,
-        pure_links: true,
-        code_class_prefix: "language-"
-      )
+    html = MDEx.to_html!(markdown, extension: [autolink: true])
 
     date =
       frontmatter

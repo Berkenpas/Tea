@@ -61,7 +61,7 @@ defmodule Tea.MixProject do
       {:ecto_sql, "~> 3.13"},
       {:postgrex, ">= 0.0.0"},
       {:swoosh, "~> 1.19"},
-      {:earmark, "~> 1.4"},
+      {:mdex, "~> 0.13.3"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"}

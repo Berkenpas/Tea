@@ -45,22 +45,24 @@ Done:
 - Custom site layout and visual CSS exist.
 - Small authenticated General chat room exists.
 - Chat uses persisted Postgres messages, LiveView streams, and PubSub inserts.
+- Fly.io release/deployment files exist.
+- The site is deployed on Fly.io at `https://teablog.fly.dev/`.
+- Neon production database configuration is connected through Fly secrets.
+- Production dependency advisories from the first deploy build have been addressed.
 
 Not done yet:
 
 - Presence tracking and typing indicators for chat.
 - RSS feed.
 - About page.
-- Fly.io release/deployment files.
-- Neon production database configuration.
 - Cloudflare DNS setup.
 
 Notes:
 
-- `mix deps.get` currently reports that `earmark` is retired. It still works for now, but a future Markdown-rendering pass should consider replacing it with a maintained package such as MDEx.
 - Local Postgres is expected to be available through the `tea-postgres` Podman container on `localhost:5432`.
 - Phoenix auth requires local build tooling (`make`, `gcc`) for `bcrypt_elixir` and Erlang `xmerl` headers for Swoosh. Those host dependencies are installed now.
 - Swoosh's API client is disabled for now; local/test mail adapters work without choosing a production email provider yet.
+- Markdown rendering now uses MDEx instead of retired Earmark.
 
 ## Target Stack
 
@@ -68,7 +70,7 @@ Notes:
 - Elixir/OTP for concurrency and reliable long-running processes.
 - LiveView for chat, presence, live notifications, and future interactive features.
 - Tailwind CSS v4 plus custom CSS for styling.
-- Earmark for Markdown rendering.
+- MDEx for Markdown rendering.
 - Neon Postgres for dynamic data.
 - Fly.io for hosting the Phoenix application.
 - Cloudflare for DNS, HTTPS edge, CDN, and basic protection.
@@ -124,7 +126,7 @@ Production runtime expectations:
 - `runtime.exs` already reads `DATABASE_URL`, `SECRET_KEY_BASE`, `PHX_HOST`, `PORT`, optional `POOL_SIZE`, and optional `ECTO_IPV6`.
 - Production repo config currently sets SSL CA certs for managed Postgres.
 - Swoosh has no production mail provider yet. Auth can use local/test adapters, but production email delivery still needs a provider decision before real users can receive magic links or email-change links.
-- The first production build surfaced security advisories for `earmark`, `hpax`, `phoenix`, and `plug`; dependency upgrades should be handled before treating the site as public-launch ready.
+- The first production build surfaced security advisories for `earmark`, `hpax`, `phoenix`, and `plug`; these have been addressed by replacing Earmark with MDEx and updating affected framework/server dependencies.
 
 Suggested Fly/Neon order:
 
@@ -219,7 +221,7 @@ Recommended implementation order:
 - [x] Configure Fly health checks for production `force_ssl`.
 - [x] Deploy to Fly.
 - [x] Run production migrations and seeds.
-- [ ] Address production build dependency advisories.
+- [x] Address production build dependency advisories.
 - [ ] Configure Cloudflare DNS.
 - [ ] Configure production email delivery before public registration/login.
 

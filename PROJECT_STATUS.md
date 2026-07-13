@@ -49,13 +49,16 @@ Done:
 - The site is deployed on Fly.io at `https://teablog.fly.dev/`.
 - Neon production database configuration is connected through Fly secrets.
 - Production dependency advisories from the first deploy build have been addressed.
+- Production article loading resolves `priv/articles` at runtime so Markdown files are visible in Fly releases.
+- Current Markdown posts have explicit `category: writing` frontmatter.
 
 Not done yet:
 
 - Presence tracking and typing indicators for chat.
 - RSS feed.
 - About page.
-- Cloudflare DNS setup.
+- Custom domain setup through Namecheap DNS or Cloudflare.
+- Production email provider setup.
 
 Notes:
 
@@ -73,7 +76,7 @@ Notes:
 - MDEx for Markdown rendering.
 - Neon Postgres for dynamic data.
 - Fly.io for hosting the Phoenix application.
-- Cloudflare for DNS, HTTPS edge, CDN, and basic protection.
+- Namecheap DNS or Cloudflare for domain management.
 
 ## Content Strategy
 
@@ -91,7 +94,15 @@ Future dynamic community content will use Postgres.
 
 ## Hosting Plan
 
-Expected request path:
+Current request path:
+
+```text
+Fly.io generated hostname
+  -> Phoenix
+  -> Neon Postgres
+```
+
+Target custom-domain request path, if using Cloudflare:
 
 ```text
 Cloudflare
@@ -100,7 +111,16 @@ Cloudflare
   -> Neon Postgres
 ```
 
-Fly.io should host the Phoenix release. Neon should store dynamic data such as users, chat rooms, chat messages, sessions, comments, and future forum content.
+Target custom-domain request path, if using Namecheap DNS directly:
+
+```text
+Namecheap DNS
+  -> Fly.io
+  -> Phoenix
+  -> Neon Postgres
+```
+
+Fly.io hosts the Phoenix release. Neon stores dynamic data such as users, chat rooms, chat messages, sessions, comments, and future forum content. Cloudflare is optional; Namecheap DNS is enough for the next stage if the goal is fewer moving parts.
 
 ## Deployment Handoff Notes
 
@@ -109,13 +129,15 @@ Current readiness:
 - The application now has database-backed auth and a small authenticated General chat room.
 - Local dev/test databases have the current migrations applied.
 - `priv/repo/seeds.exs` creates the default General chat room idempotently.
-- `mix precommit` was last verified after chat implementation with 125 tests passing.
+- `mix precommit` was last verified after deployment/content updates with 126 tests passing.
 - Phoenix release helpers and Docker deployment files have been generated.
 - A Neon project/database has been created and the direct connection string has been copied outside the repository.
 - Fly app `teablog` exists in the San Jose (`sjc`) region and a validated `fly.toml` is present in the repository.
 - First Fly deployment succeeded at `https://teablog.fly.dev/`.
 - Production migrations and the idempotent General chat room seed completed through Fly's release command.
 - Fly health checks are passing on two `sjc` app machines.
+- Production dependency cleanup has been deployed.
+- Runtime Markdown article loading has been deployed and verified on `/writings`.
 
 Production runtime expectations:
 
@@ -123,9 +145,11 @@ Production runtime expectations:
 - `SECRET_KEY_BASE` must be generated with `mix phx.gen.secret`.
 - `PHX_HOST` must match the production hostname.
 - `PHX_SERVER=true` must be set for releases/server startup.
-- `runtime.exs` already reads `DATABASE_URL`, `SECRET_KEY_BASE`, `PHX_HOST`, `PORT`, optional `POOL_SIZE`, and optional `ECTO_IPV6`.
+- `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` must contain credentials for a Google OAuth 2.0 Web application.
+- Google's authorized redirect URIs must include `https://<PHX_HOST>/users/auth/google/callback`.
+- `runtime.exs` reads `DATABASE_URL`, `SECRET_KEY_BASE`, `PHX_HOST`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `PORT`, optional `POOL_SIZE`, and optional `ECTO_IPV6`.
 - Production repo config currently sets SSL CA certs for managed Postgres.
-- Swoosh has no production mail provider yet. Auth can use local/test adapters, but production email delivery still needs a provider decision before real users can receive magic links or email-change links.
+- Google sign-in verifies email ownership without a mail provider. Magic-link login and email-change confirmation remain available but require a production mail provider to deliver their links.
 - The first production build surfaced security advisories for `earmark`, `hpax`, `phoenix`, and `plug`; these have been addressed by replacing Earmark with MDEx and updating affected framework/server dependencies.
 
 Suggested Fly/Neon order:
@@ -137,12 +161,13 @@ Suggested Fly/Neon order:
 5. Create the Fly app and `fly.toml` without provisioning Fly Postgres.
 6. Configure Fly `release_command` to run production migrations.
 7. Add a production seed path or one-off release command so the General chat room exists.
-8. Set Fly secrets: `DATABASE_URL`, `SECRET_KEY_BASE`, `PHX_HOST`, `PHX_SERVER`, and `POOL_SIZE`.
+8. Set Fly secrets: `DATABASE_URL`, `SECRET_KEY_BASE`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `PHX_HOST`, `PHX_SERVER`, and `POOL_SIZE`.
 9. Configure Fly health checks so production `force_ssl` does not cause redirect failures.
 10. Deploy to Fly.
 11. Run or verify production migrations and seeds.
-12. Configure Cloudflare DNS to point the chosen hostname at Fly.
-13. Revisit production email delivery before opening registration beyond personal/admin testing.
+12. Configure a custom domain through Namecheap DNS directly, or move DNS to Cloudflare and point the chosen hostname at Fly.
+13. Configure Google OAuth's production callback URI and verify sign-in.
+14. Revisit production email delivery if magic links or email changes should remain available.
 
 Fly/Neon details:
 
@@ -151,7 +176,88 @@ Fly/Neon details:
 - Fly health checks use an `X-Forwarded-Proto: https` header so production `force_ssl` does not cause redirect failures.
 - The Fly release command runs `Tea.Release.migrate_and_seed/0`, which runs migrations and then evaluates the idempotent seed file for the default General chat room.
 
-One important caveat before public launch: auth currently depends on email links, but Swoosh has no production mail provider configured yet. Deployment can still proceed for infrastructure testing, but real user registration/login will need email delivery before the site is truly usable by others.
+Google sign-in is the provider-free path for registration and login. Swoosh still has no production mail provider, so magic-link login and email-change confirmation cannot deliver messages in production until one is configured.
+
+## Domain Management
+
+The domain is registered at Namecheap. There are two reasonable options:
+
+1. Keep DNS at Namecheap for now.
+2. Move DNS management to Cloudflare.
+
+Namecheap-only is the simpler next step and is enough to point the domain at Fly. Cloudflare is useful later for proxying, CDN behavior, DNS tooling, and extra edge protections, but it is not required for the site to work.
+
+### Namecheap DNS Directly To Fly
+
+1. Add Fly certificates for the chosen hostnames:
+
+   ```bash
+   fly certs add example.com
+   fly certs add www.example.com
+   ```
+
+2. Inspect Fly's required DNS records:
+
+   ```bash
+   fly certs show example.com
+   fly certs show www.example.com
+   ```
+
+3. In Namecheap Advanced DNS, add the records Fly requests.
+   - Use `A` and `AAAA` records for the apex/root domain when Fly provides IPs.
+   - Use a `CNAME` for `www` pointing to the Fly hostname if Fly recommends it.
+
+4. Set the production host to the chosen canonical hostname:
+
+   ```bash
+   fly secrets set PHX_HOST=example.com
+   ```
+
+5. Deploy or restart after changing `PHX_HOST`:
+
+   ```bash
+   fly deploy
+   ```
+
+6. Verify the certificate and site:
+
+   ```bash
+   fly certs show example.com
+   curl -I https://example.com/
+   ```
+
+### Cloudflare DNS Option
+
+If using Cloudflare, create a Cloudflare account and add the Namecheap domain as a Cloudflare site. Cloudflare will provide nameservers. In Namecheap, change the domain's custom nameservers to the Cloudflare nameservers. After nameserver propagation, manage DNS records in Cloudflare instead of Namecheap.
+
+Cloudflare setup steps:
+
+1. Add the domain to Cloudflare.
+2. Copy Cloudflare's assigned nameservers.
+3. In Namecheap, set the domain nameservers to Cloudflare custom DNS.
+4. In Fly, add certificates:
+
+   ```bash
+   fly certs add example.com
+   fly certs add www.example.com
+   ```
+
+5. In Cloudflare DNS, add the records Fly requests from:
+
+   ```bash
+   fly certs show example.com
+   fly certs show www.example.com
+   ```
+
+6. Keep Cloudflare SSL/TLS mode at `Full` or `Full (strict)` once Fly certificates are issued. Avoid `Flexible`, because Phoenix/Fly should receive HTTPS-aware traffic.
+7. Set `PHX_HOST` to the canonical hostname and deploy:
+
+   ```bash
+   fly secrets set PHX_HOST=example.com
+   fly deploy
+   ```
+
+8. Verify DNS, certificate status, and HTTPS responses.
 
 ## Near-Term Goal
 
@@ -164,7 +270,7 @@ Recommended implementation order:
 3. Add one-room chat.
 4. Add Fly.io deployment files.
 5. Connect production to Neon.
-6. Point the domain through Cloudflare.
+6. Point the domain through Namecheap DNS or Cloudflare.
 
 ## Active Todo
 
@@ -222,8 +328,10 @@ Recommended implementation order:
 - [x] Deploy to Fly.
 - [x] Run production migrations and seeds.
 - [x] Address production build dependency advisories.
-- [ ] Configure Cloudflare DNS.
-- [ ] Configure production email delivery before public registration/login.
+- [x] Implement and test Google OAuth authentication.
+- [ ] Configure Google OAuth credentials and callback URI in production.
+- [ ] Configure custom domain through Namecheap DNS or Cloudflare.
+- [ ] Configure production email delivery if retaining magic links and email-change confirmation.
 
 ## Initial Data Model
 
@@ -279,7 +387,8 @@ Future forum posts:
 
 ## Cost Expectations
 
-- Cloudflare: likely free initially.
+- Namecheap DNS: included with the domain.
+- Cloudflare: optional; likely free initially if used.
 - Fly.io: likely a small shared CPU machine, roughly low single-digit dollars per month.
 - Neon: likely free tier initially.
 - Total: likely around a few dollars per month unless traffic, media, or database usage grows.

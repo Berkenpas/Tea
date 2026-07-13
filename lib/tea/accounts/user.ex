@@ -8,6 +8,7 @@ defmodule Tea.Accounts.User do
     field(:hashed_password, :string, redact: true)
     field(:confirmed_at, :utc_datetime)
     field(:authenticated_at, :utc_datetime, virtual: true)
+    field(:google_uid, :string)
 
     timestamps(type: :utc_datetime)
   end
@@ -112,6 +113,23 @@ defmodule Tea.Accounts.User do
   def confirm_changeset(user) do
     now = DateTime.utc_now(:second)
     change(user, confirmed_at: now)
+  end
+
+  @doc """
+  A changeset for registering or updating a user via Google OAuth.
+  Sets the email, google_uid, and confirms the account immediately
+  since Google has already verified email ownership.
+  """
+  def google_oauth_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:email, :google_uid, :confirmed_at])
+    |> validate_required([:email, :google_uid])
+    |> validate_format(:email, ~r/^[^@,;\s]+@[^@,;\s]+$/,
+      message: "must have the @ sign and no spaces"
+    )
+    |> validate_length(:email, max: 160)
+    |> unique_constraint(:email)
+    |> unique_constraint(:google_uid)
   end
 
   @doc """

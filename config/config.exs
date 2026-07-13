@@ -26,6 +26,16 @@ config :tea,
 config :tea,
   ecto_repos: [Tea.Repo]
 
+# Use logger adapter as a safe default for environments that do not
+# override Tea.Mailer (e.g., production before SMTP/API setup).
+config :tea, Tea.Mailer, adapter: Swoosh.Adapters.Logger
+
+# Google OAuth credentials — override per environment (see runtime.exs for prod)
+config :tea,
+  google_client_id: System.get_env("GOOGLE_CLIENT_ID", ""),
+  google_client_secret: System.get_env("GOOGLE_CLIENT_SECRET", ""),
+  google_req_options: []
+
 # Configure the endpoint
 config :tea, TeaWeb.Endpoint,
   url: [host: "localhost"],

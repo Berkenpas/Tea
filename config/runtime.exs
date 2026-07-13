@@ -65,6 +65,14 @@ if config_env() == :prod do
     ],
     secret_key_base: secret_key_base
 
+  config :tea,
+    google_client_id:
+      System.get_env("GOOGLE_CLIENT_ID") ||
+        raise("environment variable GOOGLE_CLIENT_ID is missing"),
+    google_client_secret:
+      System.get_env("GOOGLE_CLIENT_SECRET") ||
+        raise("environment variable GOOGLE_CLIENT_SECRET is missing")
+
   # ## SSL Support
   #
   # To get SSL working, you will need to add the `https` key

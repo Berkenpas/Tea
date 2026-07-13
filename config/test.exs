@@ -3,6 +3,8 @@ import Config
 # Only in tests, remove the complexity from the password hashing algorithm
 config :bcrypt_elixir, :log_rounds, 1
 config :tea, Tea.Mailer, adapter: Swoosh.Adapters.Test
+config :tea, google_client_id: "google-client-id", google_client_secret: "google-client-secret"
+config :tea, google_req_options: [plug: {Req.Test, TeaWeb.GoogleAuthController}]
 
 config :tea, Tea.Repo,
   username: "postgres",

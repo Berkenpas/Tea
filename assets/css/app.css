@@ -747,6 +747,24 @@ form + .button {
   background: var(--tea-paper-pressed);
 }
 
+.button--google {
+  border-color: var(--tea-line);
+  background: var(--tea-paper-deep);
+  color: var(--tea-ink);
+  gap: 0.7rem;
+}
+
+.button--google:hover {
+  border-color: var(--tea-clay);
+  background: var(--tea-paper-pressed);
+}
+
+.button--google svg {
+  flex: 0 0 auto;
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
 .form-divider {
   display: grid;
   grid-template-columns: 1fr auto 1fr;

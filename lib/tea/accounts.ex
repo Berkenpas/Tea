@@ -63,6 +63,41 @@ defmodule Tea.Accounts do
   ## User registration
 
   @doc """
+  Finds an existing user by Google UID or email, or creates a new confirmed user.
+
+  Returns `{:ok, user}` or `{:error, changeset}`.
+  """
+  def find_or_register_google_user(%{google_uid: google_uid, email: email}) do
+    now = DateTime.utc_now(:second)
+
+    cond do
+      # Known Google user — just return them
+      user = Repo.get_by(User, google_uid: google_uid) ->
+        {:ok, user}
+
+      # Existing email account — link the Google UID
+      user = Repo.get_by(User, email: email) ->
+        user
+        |> User.google_oauth_changeset(%{
+          google_uid: google_uid,
+          email: email,
+          confirmed_at: user.confirmed_at || now
+        })
+        |> Repo.update()
+
+      # Brand new user — create with confirmed email
+      true ->
+        %User{}
+        |> User.google_oauth_changeset(%{
+          email: email,
+          google_uid: google_uid,
+          confirmed_at: now
+        })
+        |> Repo.insert()
+    end
+  end
+
+  @doc """
   Registers a user.
 
   ## Examples
@@ -259,8 +294,14 @@ defmodule Tea.Accounts do
       when is_function(update_email_url_fun, 1) do
     {encoded_token, user_token} = UserToken.build_email_token(user, "change:#{current_email}")
 
-    Repo.insert!(user_token)
-    UserNotifier.deliver_update_email_instructions(user, update_email_url_fun.(encoded_token))
+    with {:ok, _user_token} <- Repo.insert(user_token),
+         {:ok, _email} = result <-
+           UserNotifier.deliver_update_email_instructions(
+             user,
+             update_email_url_fun.(encoded_token)
+           ) do
+      result
+    end
   end
 
   @doc """
@@ -269,8 +310,12 @@ defmodule Tea.Accounts do
   def deliver_login_instructions(%User{} = user, magic_link_url_fun)
       when is_function(magic_link_url_fun, 1) do
     {encoded_token, user_token} = UserToken.build_email_token(user, "login")
-    Repo.insert!(user_token)
-    UserNotifier.deliver_login_instructions(user, magic_link_url_fun.(encoded_token))
+
+    with {:ok, _user_token} <- Repo.insert(user_token),
+         {:ok, _email} = result <-
+           UserNotifier.deliver_login_instructions(user, magic_link_url_fun.(encoded_token)) do
+      result
+    end
   end
 
   @doc """

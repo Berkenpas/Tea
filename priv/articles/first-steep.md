@@ -2,6 +2,7 @@
 title: Owner Guide: Running and Growing Your Tea Blog
 excerpt: A practical guide for adding writings, reviews, running locally, and extending your site.
 date: 2026-05-19
+category: writing
 tags: tea, indie web, lofi, phoenix
 ---
 

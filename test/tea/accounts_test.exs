@@ -394,4 +394,49 @@ defmodule Tea.AccountsTest do
       refute inspect(%User{password: "123456"}) =~ "password: \"123456\""
     end
   end
+
+  describe "find_or_register_google_user/1" do
+    test "creates a confirmed user" do
+      assert {:ok, user} =
+               Accounts.find_or_register_google_user(%{
+                 email: "google@example.com",
+                 google_uid: "google-uid"
+               })
+
+      assert user.email == "google@example.com"
+      assert user.google_uid == "google-uid"
+      assert user.confirmed_at
+    end
+
+    test "returns the existing user for a known Google UID" do
+      {:ok, user} =
+        Accounts.find_or_register_google_user(%{
+          email: "google@example.com",
+          google_uid: "google-uid"
+        })
+
+      assert {:ok, same_user} =
+               Accounts.find_or_register_google_user(%{
+                 email: "changed-at-google@example.com",
+                 google_uid: "google-uid"
+               })
+
+      assert same_user.id == user.id
+      assert same_user.email == user.email
+    end
+
+    test "links and confirms an existing email account" do
+      user = unconfirmed_user_fixture(%{email: "existing@example.com"})
+
+      assert {:ok, linked_user} =
+               Accounts.find_or_register_google_user(%{
+                 email: user.email,
+                 google_uid: "google-uid"
+               })
+
+      assert linked_user.id == user.id
+      assert linked_user.google_uid == "google-uid"
+      assert linked_user.confirmed_at
+    end
+  end
 end

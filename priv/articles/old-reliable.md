@@ -2,6 +2,7 @@
 title: Old Reliable: Or, The Beauty of the Simple, and Difficulty of the Luxurious
 excerpt: Why do we gravitate to spending our money on the best, when we choose to use the inexpensive?
 date: 2026-06-10
+category: writing
 tags: purchasing, habits, philosophy, humanness
 ---
 

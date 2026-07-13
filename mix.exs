@@ -62,6 +62,7 @@ defmodule Tea.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:swoosh, "~> 1.19"},
       {:mdex, "~> 0.13.3"},
+      {:req, "~> 0.5"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"}

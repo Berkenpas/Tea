@@ -1,6 +1,8 @@
 defmodule Tea.Accounts.UserNotifier do
   import Swoosh.Email
 
+  require Logger
+
   alias Tea.Mailer
   alias Tea.Accounts.User
 
@@ -13,8 +15,15 @@ defmodule Tea.Accounts.UserNotifier do
       |> subject(subject)
       |> text_body(body)
 
-    with {:ok, _metadata} <- Mailer.deliver(email) do
-      {:ok, email}
+    try do
+      with {:ok, _metadata} <- Mailer.deliver(email) do
+        {:ok, email}
+      end
+    rescue
+      exception ->
+        Logger.error("Failed to deliver email to #{recipient}: #{Exception.message(exception)}")
+
+        {:error, {:mailer_exception, exception}}
     end
   end
 

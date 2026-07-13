@@ -62,4 +62,11 @@ defmodule TeaWeb.Router do
     post "/users/log-in", UserSessionController, :create
     delete "/users/log-out", UserSessionController, :delete
   end
+
+  scope "/users/auth", TeaWeb do
+    pipe_through :browser
+
+    get "/google", GoogleAuthController, :authorize
+    get "/google/callback", GoogleAuthController, :callback
+  end
 end

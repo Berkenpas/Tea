@@ -14,11 +14,19 @@ Create an OAuth 2.0 Web application in Google Cloud and set:
 ```bash
 export GOOGLE_CLIENT_ID="..."
 export GOOGLE_CLIENT_SECRET="..."
+mix phx.server
 ```
+
+Set those variables in the same terminal session that starts Phoenix. If the server is already
+running, stop it and start it again after exporting the values.
 
 Add `http://localhost:4000/users/auth/google/callback` as an authorized redirect URI for
 local development. Production must use the exact HTTPS callback for its `PHX_HOST`, for example
 `https://teablog.fly.dev/users/auth/google/callback`.
+
+Tea uses Google sign-in for registration, login, and email ownership verification. Email-link
+registration, magic-link login, and in-app email/password changes are intentionally not exposed
+because the app does not currently use a production mail provider.
 
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
 

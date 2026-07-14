@@ -149,7 +149,7 @@ Production runtime expectations:
 - Google's authorized redirect URIs must include `https://<PHX_HOST>/users/auth/google/callback`.
 - `runtime.exs` reads `DATABASE_URL`, `SECRET_KEY_BASE`, `PHX_HOST`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `PORT`, optional `POOL_SIZE`, and optional `ECTO_IPV6`.
 - Production repo config currently sets SSL CA certs for managed Postgres.
-- Google sign-in verifies email ownership without a mail provider. Magic-link login and email-change confirmation remain available but require a production mail provider to deliver their links.
+- Google sign-in verifies email ownership without a mail provider. Email-link registration, magic-link login, and in-app email/password changes are intentionally not exposed.
 - The first production build surfaced security advisories for `earmark`, `hpax`, `phoenix`, and `plug`; these have been addressed by replacing Earmark with MDEx and updating affected framework/server dependencies.
 
 Suggested Fly/Neon order:
@@ -167,7 +167,7 @@ Suggested Fly/Neon order:
 11. Run or verify production migrations and seeds.
 12. Configure a custom domain through Namecheap DNS directly, or move DNS to Cloudflare and point the chosen hostname at Fly.
 13. Configure Google OAuth's production callback URI and verify sign-in.
-14. Revisit production email delivery if magic links or email changes should remain available.
+14. Revisit production email delivery only if email-link login or email-change flows should return.
 
 Fly/Neon details:
 
@@ -176,7 +176,7 @@ Fly/Neon details:
 - Fly health checks use an `X-Forwarded-Proto: https` header so production `force_ssl` does not cause redirect failures.
 - The Fly release command runs `Tea.Release.migrate_and_seed/0`, which runs migrations and then evaluates the idempotent seed file for the default General chat room.
 
-Google sign-in is the provider-free path for registration and login. Swoosh still has no production mail provider, so magic-link login and email-change confirmation cannot deliver messages in production until one is configured.
+Google sign-in is the provider-free path for registration and login. Swoosh still has no production mail provider, so email-link registration, magic-link login, and in-app email/password changes are not exposed.
 
 ## Domain Management
 
@@ -329,9 +329,9 @@ Recommended implementation order:
 - [x] Run production migrations and seeds.
 - [x] Address production build dependency advisories.
 - [x] Implement and test Google OAuth authentication.
-- [ ] Configure Google OAuth credentials and callback URI in production.
-- [ ] Configure custom domain through Namecheap DNS or Cloudflare.
-- [ ] Configure production email delivery if retaining magic links and email-change confirmation.
+- [x] Configure Google OAuth credentials and callback URI in production.
+- [x] Configure custom domain through Namecheap DNS or Cloudflare.
+- [ ] Configure production email delivery only if email-link login or email-change flows should return.
 
 ## Initial Data Model
 

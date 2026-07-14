@@ -580,6 +580,36 @@ a {
   text-align: center;
 }
 
+.auth-panel__footnote {
+  margin: 1rem 0 0;
+  color: var(--tea-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.auth-account-card {
+  display: grid;
+  gap: 0.35rem;
+  border: 1px solid var(--tea-line);
+  padding: 1rem;
+  background: var(--tea-paper-deep);
+}
+
+.auth-account-card__label {
+  color: var(--tea-muted);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.auth-account-card__email {
+  overflow-wrap: anywhere;
+  color: var(--tea-ink);
+  font-size: 1rem;
+}
+
 .section-heading {
   padding-bottom: 0;
 }

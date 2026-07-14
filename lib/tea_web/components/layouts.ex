@@ -42,9 +42,30 @@ defmodule TeaWeb.Layouts do
       </a>
 
       <nav class="site-nav" aria-label="Main navigation">
-        <a href={~p"/writings"}>Writings</a>
-        <a href={~p"/reviews"}>Reviews</a>
-        <a :if={@current_scope && @current_scope.user} href={~p"/chat"}>Chat</a>
+        <div class="site-nav__primary">
+          <a href={~p"/writings"}>Writings</a>
+          <a href={~p"/reviews"}>Reviews</a>
+
+          <details class="site-nav__dropdown">
+            <summary>
+              Community <.icon name="hero-chevron-down" class="site-nav__dropdown-icon" />
+            </summary>
+
+            <div class="site-nav__dropdown-menu" role="menu" aria-label="Community links">
+              <a href={~p"/chat"} role="menuitem">Chat</a>
+              <a href={~p"/guestbook"} role="menuitem">Guest Book</a>
+            </div>
+          </details>
+        </div>
+
+        <div class="site-nav__account">
+          <a :if={@current_scope && @current_scope.user} href={~p"/users/settings"}>Settings</a>
+          <.link :if={@current_scope && @current_scope.user} href={~p"/users/log-out"} method="delete">
+            Log out
+          </.link>
+          <a :if={!(@current_scope && @current_scope.user)} href={~p"/users/log-in"}>Login</a>
+          <a :if={!(@current_scope && @current_scope.user)} href={~p"/users/register"}>Register</a>
+        </div>
       </nav>
     </header>
 

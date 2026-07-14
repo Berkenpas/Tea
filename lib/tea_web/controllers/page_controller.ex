@@ -2,11 +2,13 @@ defmodule TeaWeb.PageController do
   use TeaWeb, :controller
 
   alias Tea.Blog
+  alias Tea.Guestbook
 
   def home(conn, _params) do
     recent_article = Blog.list_articles() |> List.first()
 
     render(conn, :home,
+      guestbook_entry_count: Guestbook.count_entries(),
       recent_article: recent_article,
       recent_article_path: recent_article_path(recent_article)
     )

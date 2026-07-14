@@ -3,6 +3,7 @@ title: Owner Guide: Running and Growing Your Tea Blog
 excerpt: A practical guide for adding writings, reviews, running locally, and extending your site.
 date: 2026-05-19
 category: writing
+draft: true
 tags: tea, indie web, lofi, phoenix
 ---
 
@@ -53,6 +54,21 @@ tags: tea, review
 ---
 ```
 
+To keep an article visible only while running locally in development, add `draft: true`:
+
+```md
+---
+title: Work in Progress
+excerpt: Notes that are not ready for production yet.
+date: 2026-05-19
+category: writing
+draft: true
+tags: tea, notes
+---
+```
+
+Draft articles are shown in local development and hidden everywhere else, including production.
+
 The filename becomes the route:
 
 - `priv/articles/my-second-writing.md` -> `/writings/my-second-writing`
@@ -91,10 +107,9 @@ You can change:
 Suggested improvements:
 
 1. Add pagination on the writings and reviews lists.
-2. Add draft support in frontmatter (`draft: true`).
-3. Add reading time calculation.
-4. Add RSS feed generation.
-5. Add syntax highlighting themes for code blocks.
+2. Add reading time calculation.
+3. Add RSS feed generation.
+4. Add syntax highlighting themes for code blocks.
 
 ## 6) Before deploying
 

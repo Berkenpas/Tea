@@ -24,7 +24,8 @@ config :tea,
   generators: [timestamp_type: :utc_datetime]
 
 config :tea,
-  ecto_repos: [Tea.Repo]
+  ecto_repos: [Tea.Repo],
+  show_drafts: false
 
 # Use logger adapter as a safe default for environments that do not
 # override Tea.Mailer (e.g., production before SMTP/API setup).

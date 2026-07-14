@@ -18,22 +18,22 @@ defmodule TeaWeb.BlogControllerTest do
 
     body = html_response(conn, 200)
     assert body =~ "Writings"
-    assert body =~ "Owner Guide: Running and Growing Your Tea Blog"
+    assert body =~ "Old Reliable: Or, The Beauty of the Simple, and Difficulty of the Luxurious"
   end
 
-  test "GET /reviews shows an empty state", %{conn: conn} do
+  test "GET /reviews", %{conn: conn} do
     conn = get(conn, ~p"/reviews")
 
     body = html_response(conn, 200)
     assert body =~ "Reviews"
-    assert body =~ "No reviews yet"
+    assert body =~ "2026 Dragon Claw Tea (Ya Bao White Tea)"
   end
 
   test "GET /writings/:slug", %{conn: conn} do
-    conn = get(conn, ~p"/writings/first-steep")
+    conn = get(conn, ~p"/writings/old-reliable")
 
     body = html_response(conn, 200)
-    assert body =~ "Owner Guide: Running and Growing Your Tea Blog"
+    assert body =~ "Old Reliable: Or, The Beauty of the Simple, and Difficulty of the Luxurious"
     assert body =~ "Back to writings"
   end
 

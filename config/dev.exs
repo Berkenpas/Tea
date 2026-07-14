@@ -1,5 +1,7 @@
 import Config
 
+config :tea, show_drafts: true
+
 config :tea, Tea.Repo,
   username: "postgres",
   password: "postgres",

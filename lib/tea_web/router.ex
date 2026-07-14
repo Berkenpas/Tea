@@ -51,6 +51,7 @@ defmodule TeaWeb.Router do
 
     live_session :current_user,
       on_mount: [{TeaWeb.UserAuth, :mount_current_scope}] do
+      live "/guestbook", GuestbookLive, :index
       live "/users/register", UserLive.Registration, :new
       live "/users/log-in", UserLive.Login, :new
     end

@@ -7,6 +7,7 @@ defmodule Tea.Blog do
     articles_glob()
     |> Path.wildcard()
     |> Enum.map(&parse_article_file/1)
+    |> Enum.reject(&hidden_draft?/1)
     |> Enum.sort_by(& &1.date, {:desc, Date})
   end
 
@@ -66,9 +67,26 @@ defmodule Tea.Blog do
       excerpt: Map.get(frontmatter, "excerpt", ""),
       date: date,
       category: category(frontmatter),
+      draft?: draft?(frontmatter),
       tags: tags,
       html: html
     }
+  end
+
+  defp hidden_draft?(article) do
+    article.draft? and not show_drafts?()
+  end
+
+  defp show_drafts? do
+    Application.get_env(:tea, :show_drafts, false)
+  end
+
+  defp draft?(frontmatter) do
+    frontmatter
+    |> Map.get("draft", "false")
+    |> String.downcase()
+    |> String.trim()
+    |> Kernel.in(["true", "yes", "1"])
   end
 
   defp category(frontmatter) do

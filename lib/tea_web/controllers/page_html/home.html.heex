@@ -1,4 +1,4 @@
-<Layouts.app flash={@flash}>
+<Layouts.app flash={@flash} current_scope={@current_scope}>
   <main class="site-main">
     <section class="home-hero">
       <div class="home-hero__copy">
@@ -17,6 +17,16 @@
           <a href={~p"/writings"} class="text-link text-link--strong">Read writings</a>
           <a :if={@recent_article} href={@recent_article_path} class="text-link">
             Recent post
+          </a>
+          <a href={~p"/guestbook"} class="text-link home-community-link">
+            <span>Guest Book</span>
+            <span
+              :if={@guestbook_entry_count > 0}
+              class="count-badge"
+              aria-label="guestbook entries"
+            >
+              {@guestbook_entry_count}
+            </span>
           </a>
         </div>
       </div>

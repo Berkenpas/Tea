@@ -11,26 +11,9 @@
     </script>
   </head>
   <body>
-    <ul class="auth-strip">
-      <%= if @current_scope do %>
-        <li class="auth-strip__identity">
-          {@current_scope.user.email}
-        </li>
-        <li>
-          <.link href={~p"/users/settings"}>Settings</.link>
-        </li>
-        <li>
-          <.link href={~p"/users/log-out"} method="delete">Log out</.link>
-        </li>
-      <% else %>
-        <li>
-          <.link href={~p"/users/register"}>Register</.link>
-        </li>
-        <li>
-          <.link href={~p"/users/log-in"}>Log in</.link>
-        </li>
-      <% end %>
-    </ul>
+    <div :if={assigns[:current_scope] && assigns[:current_scope].user} class="identity-strip">
+      Signed in as {assigns[:current_scope].user.email}
+    </div>
     {@inner_content}
   </body>
 </html>

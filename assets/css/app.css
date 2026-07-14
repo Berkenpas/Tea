@@ -135,10 +135,101 @@ a {
 
 .site-nav {
   display: flex;
+  flex: 1;
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 1rem 1.5rem;
   color: var(--tea-muted);
+}
+
+.site-nav__primary,
+.site-nav__account {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+}
+
+.site-nav__dropdown {
+  position: relative;
+}
+
+.site-nav__dropdown summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  list-style: none;
+  transition: color 160ms ease;
+}
+
+.site-nav__dropdown summary::-webkit-details-marker {
+  display: none;
+}
+
+.site-nav__dropdown summary:hover {
+  color: var(--tea-clay);
+}
+
+.site-nav__dropdown-icon {
+  width: 0.86rem;
+  height: 0.86rem;
+  transition: transform 160ms ease;
+}
+
+.site-nav__dropdown[open] .site-nav__dropdown-icon {
+  transform: rotate(180deg);
+}
+
+.site-nav__dropdown-menu {
+  position: absolute;
+  z-index: 15;
+  top: calc(100% + 0.55rem);
+  left: -0.65rem;
+  display: grid;
+  min-width: 11rem;
+  border: 1px solid var(--tea-line);
+  background: color-mix(in srgb, var(--tea-paper) 88%, white);
+  box-shadow: 0 0.7rem 1.25rem rgb(42 33 24 / 0.15);
+  padding: 0.4rem;
+}
+
+.site-nav__dropdown-menu a {
+  border: 1px solid transparent;
+  padding: 0.45rem 0.55rem;
+  transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease;
+}
+
+.count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.45rem;
+  border: 1px solid color-mix(in srgb, var(--tea-clay) 50%, var(--tea-line));
+  background: color-mix(in srgb, var(--tea-paper-deep) 75%, var(--tea-clay) 8%);
+  color: var(--tea-ink);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  padding: 0.22rem 0.35rem;
+}
+
+.home-community-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.site-nav__dropdown-menu a:hover,
+.site-nav__dropdown-menu a:focus-visible {
+  border-color: var(--tea-line);
+  background: var(--tea-paper-deep);
+  color: var(--tea-ink);
+}
+
+.site-nav__account {
+  justify-content: flex-end;
 }
 
 .site-nav a,
@@ -153,6 +244,19 @@ a {
 .site-footer a:hover,
 .article-row__body a:hover {
   color: var(--tea-clay);
+}
+
+.identity-strip {
+  width: min(100% - 2rem, 72rem);
+  margin: 0 auto;
+  padding: 0.75rem 0 0;
+  overflow-wrap: anywhere;
+  color: var(--tea-muted);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-align: right;
+  text-transform: uppercase;
 }
 
 .site-main {
@@ -520,40 +624,14 @@ a {
   background: transparent;
 }
 
-.auth-strip {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 0.8rem 1.1rem;
-  width: min(100% - 2rem, 72rem);
-  margin: 0 auto;
-  padding: 0.75rem 0 0;
-  color: var(--tea-muted);
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  list-style: none;
-  text-transform: uppercase;
-}
-
-.auth-strip a,
 .inline-text-link {
   border-bottom: 1px solid currentColor;
   color: var(--tea-clay);
   transition: color 160ms ease, border-color 160ms ease;
 }
 
-.auth-strip a:hover,
 .inline-text-link:hover {
   color: var(--tea-leaf);
-}
-
-.auth-strip__identity {
-  max-width: min(42vw, 24rem);
-  overflow: hidden;
-  color: var(--tea-ink);
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .site-main--auth {
@@ -1002,6 +1080,137 @@ form + .button {
   padding-bottom: 1.25rem;
 }
 
+.site-main--guestbook {
+  width: min(100% - 2rem, 58rem);
+  padding-top: clamp(2rem, 6vw, 4.5rem);
+}
+
+.guestbook-shell {
+  display: grid;
+  gap: 1rem;
+}
+
+.guestbook-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  border-bottom: 1px solid var(--tea-line);
+  padding-bottom: 1.25rem;
+}
+
+.guestbook-header h1 {
+  margin: 0.6rem 0 0;
+  color: var(--tea-ink);
+  font-family: var(--tea-font-serif);
+  font-size: clamp(2.6rem, 8vw, 4.5rem);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 0.98;
+}
+
+.guestbook-header p:last-child {
+  max-width: min(100%, 22rem);
+  margin: 0;
+  color: var(--tea-muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.guestbook-composer {
+  border-top: 1px solid var(--tea-line);
+  border-bottom: 1px solid var(--tea-line);
+  padding: 1rem 0 1.25rem;
+}
+
+.guestbook-actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.guestbook-actions .button {
+  width: auto;
+  min-width: 10rem;
+  margin: 0;
+}
+
+.guestbook-grid {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.guestbook-grid--compact {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.guestbook-entries {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+  min-height: 22rem;
+  border-bottom: 1px solid var(--tea-line);
+  padding-bottom: 1.25rem;
+}
+
+.guestbook-empty,
+.guestbook-entry {
+  border: 1px solid var(--tea-line);
+  background: var(--tea-paper-deep);
+  padding: 1rem;
+}
+
+.guestbook-empty p:last-child {
+  margin: 0.65rem 0 0;
+  color: var(--tea-muted);
+}
+
+.guestbook-entry {
+  animation: fade-up 220ms ease-out both;
+}
+
+.guestbook-entry__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem 1rem;
+  color: var(--tea-muted);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.guestbook-entry__author {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.guestbook-entry__badge {
+  border: 1px solid color-mix(in srgb, var(--tea-leaf) 45%, var(--tea-line));
+  background: color-mix(in srgb, var(--tea-paper-deep) 80%, var(--tea-leaf) 7%);
+  color: var(--tea-leaf);
+  padding: 0.08rem 0.38rem;
+}
+
+.guestbook-entry__card {
+  color: var(--tea-clay);
+}
+
+.guestbook-entry p {
+  margin: 0.65rem 0 0;
+  color: var(--tea-ink);
+  line-height: 1.65;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
 @media (max-width: 760px) {
   .site-header,
   .site-footer {
@@ -1011,6 +1220,15 @@ form + .button {
 
   .site-nav {
     justify-content: flex-start;
+  }
+
+  .site-nav__account {
+    justify-content: flex-start;
+  }
+
+  .site-nav__dropdown-menu {
+    position: static;
+    margin-top: 0.55rem;
   }
 
   .home-hero,
@@ -1046,6 +1264,20 @@ form + .button {
 
   .chat-messages {
     max-height: none;
+  }
+
+  .guestbook-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .guestbook-header p:last-child {
+    max-width: 100%;
+    text-align: left;
+  }
+
+  .guestbook-grid--compact {
+    grid-template-columns: 1fr;
   }
 }
 

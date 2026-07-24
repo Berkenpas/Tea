@@ -4,6 +4,7 @@ excerpt: A newfound favorite replacing what was once lost.
 date: 2026-06-09
 category: reviews
 tags: tea, tealyra, reviews, green tea, japan
+rating: 7.5
 ---
 
 Having ran out of a previous bit of sencha I had acquired from a tea store in Denmark (gift from my father), I was in the market to find something similar, and had wanted to try out Tealyra after being recommended the store/merchant from a coworker. I, like many I presume, are still mourning the loss of Teavana. Perhaps my age and nostalgia for it paints it in a fairer light (becuase lets be honest, how authentic can a tea chain owned by Starbucks really be?), but I do fondly recall all of the teas I could easily purchase there and their excellent selection of loose leaf teas, and have been searching for a retailer similar, and I had hoped that tealyra was such a replacement. I had ordered two white teas (my favorite type) and this sencha to give them a go, all loose leaf. This sencha was probably the best of the three, I wasn't all too impressed with the whites I had gotten, but I'll write more about the other two elsewhere.

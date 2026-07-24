@@ -13,8 +13,19 @@
         </p>
         <h1>{@article.title}</h1>
 
-        <div class="tag-list" aria-label="Article tags">
-          <span :for={tag <- @article.tags}>{tag}</span>
+        <div class="article-meta">
+          <span
+            :if={@article.rating}
+            class={["rating-chip", rating_tone(@article.rating)]}
+            aria-label={"Tea rating: #{format_rating(@article.rating)} out of 10"}
+          >
+            <span class="rating-chip__label">Rating</span>
+            <strong>{format_rating(@article.rating)}/10</strong>
+          </span>
+
+          <div :if={@article.tags != []} class="tag-list" aria-label="Article tags">
+            <span :for={tag <- @article.tags}>{tag}</span>
+          </div>
         </div>
       </header>
 

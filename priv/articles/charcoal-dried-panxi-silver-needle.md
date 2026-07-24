@@ -4,6 +4,7 @@ excerpt: A unique take on white tea, with a smokey flavor.
 date: 2026-07-07
 category: reviews
 tags: tea, white, charcoal, steeping room, silver needle
+rating: 2
 ---
 
 After having received my latest couple of teas from steeping room, I had very excitedly reviewed my favorites, the 2026 Dragon Claw Tea from Vietnam and Jasmine Green Tea Pearls, both of which ranked fairly highly in my rating. This one however, I do not think will be so lucky.

@@ -1,9 +1,10 @@
 ---
 title: Jasmine Green Tea Pearls from Steeping Room
 excerpt: A newfound favorite replacing what was once lost.
-date: 2026-06-11
+date: 2026-07-11
 category: reviews
 tags: tea, steeping room, reviews, green tea
+rating: 9
 ---
 
 I've talked prior about my prior love of teas from Teavana, and have had in my heart a special place for a favorite of mine from there that I had (luckily) stockpiled a supply of before they stopped their normal operation but soon ran out of a year or so later. That cherished tea was none other than their Jasmine Dragon Phoenix Pearls. 

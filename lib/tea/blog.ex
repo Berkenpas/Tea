@@ -69,6 +69,7 @@ defmodule Tea.Blog do
       category: category(frontmatter),
       draft?: draft?(frontmatter),
       tags: tags,
+      rating: rating(frontmatter),
       html: html
     }
   end
@@ -87,6 +88,13 @@ defmodule Tea.Blog do
     |> String.downcase()
     |> String.trim()
     |> Kernel.in(["true", "yes", "1"])
+  end
+
+  defp rating(frontmatter) do
+    case Float.parse(Map.get(frontmatter, "rating", "")) do
+      {rating, ""} when rating >= 1 and rating <= 10 -> rating
+      _ -> nil
+    end
   end
 
   defp category(frontmatter) do

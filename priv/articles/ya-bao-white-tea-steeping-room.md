@@ -4,6 +4,7 @@ excerpt: Refreshing, new, and exciting tea that I have never seen the likes of b
 date: 2026-06-12
 category: reviews
 tags: tea, steeping room, reviews, white tea, vietnam
+rating: 9
 ---
 
 When I saw this on the list of white teas I couldn't help myself but order it, the shape and form of the individual "leaves" (they're buds, I know) was so enticing, and fitting the name of "dragon claw" (_Trà Móng Rồng_). Or, perhaps that, or, small insect cocoons from a delicate insect that has formed a shell in the attempt to develop and sprout its wings and take flight. Either way, a very handsome and unique shape for tea, and a variety I have never heard of, I had to try it.

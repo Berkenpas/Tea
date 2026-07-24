@@ -14,6 +14,7 @@ defmodule Tea.BlogTest do
     excerpt: Loaded from a runtime-configured article directory.
     date: 2026-07-08
     tags: runtime, release
+    rating: 7.5
     ---
 
     # Runtime Post
@@ -37,6 +38,7 @@ defmodule Tea.BlogTest do
                slug: "runtime-post",
                title: "Runtime Post",
                category: "writing",
+               rating: 7.5,
                html: html
              }
            ] = Blog.list_articles()

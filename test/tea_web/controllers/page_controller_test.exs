@@ -9,7 +9,7 @@ defmodule TeaWeb.PageControllerTest do
     conn = get(conn, ~p"/")
 
     body = html_response(conn, 200)
-    assert body =~ "Quiet ideas brewed slowly"
+    assert body =~ "Quiet ideas steeped slowly"
     assert body =~ "Recent post"
     assert body =~ ~s(href="/writings")
     assert body =~ ~s(href="/reviews")

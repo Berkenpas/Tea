@@ -188,7 +188,7 @@ a {
 .site-nav__dropdown-menu {
   position: absolute;
   z-index: 15;
-  top: calc(100% + 0.55rem);
+  top: calc(100% + 0.25rem);
   left: -0.65rem;
   display: none;
   min-width: 11rem;
@@ -196,6 +196,15 @@ a {
   background: color-mix(in srgb, var(--tea-paper) 88%, white);
   box-shadow: 0 0.7rem 1.25rem rgb(42 33 24 / 0.15);
   padding: 0.4rem;
+}
+
+.site-nav__dropdown-menu::before {
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  left: 0;
+  height: 0.35rem;
+  content: "";
 }
 
 .site-nav__dropdown:hover .site-nav__dropdown-menu,

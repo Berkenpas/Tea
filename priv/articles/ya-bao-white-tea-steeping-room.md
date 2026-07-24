@@ -1,7 +1,7 @@
 ---
 title: 2026 Dragon Claw Tea (Ya Bao White Tea)
 excerpt: Refreshing, new, and exciting tea that I have never seen the likes of before.
-date: 2026-06-12
+date: 2026-07-12
 category: reviews
 tags: tea, steeping room, reviews, white tea, vietnam
 rating: 9

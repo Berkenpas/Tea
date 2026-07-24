@@ -43,19 +43,29 @@ defmodule TeaWeb.Layouts do
 
       <nav class="site-nav" aria-label="Main navigation">
         <div class="site-nav__primary">
-          <a href={~p"/writings"}>Writings</a>
-          <a href={~p"/reviews"}>Reviews</a>
+          <a id="main-nav-home" href={~p"/"}>Home</a>
 
-          <details class="site-nav__dropdown">
-            <summary>
+          <div id="writings-nav" class="site-nav__dropdown">
+            <button type="button" class="site-nav__dropdown-trigger" aria-haspopup="true">
+              Writings <.icon name="hero-chevron-down" class="site-nav__dropdown-icon" />
+            </button>
+
+            <div class="site-nav__dropdown-menu" role="menu" aria-label="Writings links">
+              <a href={~p"/writings"} role="menuitem">Articles</a>
+              <a href={~p"/reviews"} role="menuitem">Reviews</a>
+            </div>
+          </div>
+
+          <div id="community-nav" class="site-nav__dropdown">
+            <button type="button" class="site-nav__dropdown-trigger" aria-haspopup="true">
               Community <.icon name="hero-chevron-down" class="site-nav__dropdown-icon" />
-            </summary>
+            </button>
 
             <div class="site-nav__dropdown-menu" role="menu" aria-label="Community links">
               <a href={~p"/chat"} role="menuitem">Chat</a>
               <a href={~p"/guestbook"} role="menuitem">Guest Book</a>
             </div>
-          </details>
+          </div>
         </div>
 
         <div class="site-nav__account">

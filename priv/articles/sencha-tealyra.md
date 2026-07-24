@@ -1,7 +1,7 @@
 ---
 title: Sencha Tenkaichi Tealyra
 excerpt: A newfound favorite replacing what was once lost.
-date: 2026-06-09
+date: 2026-07-09
 category: reviews
 tags: tea, tealyra, reviews, green tea, japan
 rating: 7.5

@@ -136,7 +136,7 @@ a {
 .site-nav {
   display: flex;
   flex: 1;
-  flex-wrap: wrap;
+  align-items: flex-start;
   justify-content: flex-end;
   gap: 1rem 1.5rem;
   color: var(--tea-muted);
@@ -145,8 +145,7 @@ a {
 .site-nav__primary,
 .site-nav__account {
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+  align-items: flex-start;
   gap: 1rem 1.5rem;
 }
 
@@ -1315,15 +1314,34 @@ form + .button {
   }
 
   .site-nav {
+    width: 100%;
+    flex-direction: column;
     justify-content: flex-start;
+    gap: 1rem;
+  }
+
+  .site-nav__primary,
+  .site-nav__account {
+    width: 100%;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1rem;
   }
 
   .site-nav__account {
     justify-content: flex-start;
   }
 
+  .site-nav__dropdown {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+  }
+
   .site-nav__dropdown-menu {
     position: static;
+    width: min(100%, 18rem);
     margin-top: 0.55rem;
   }
 
